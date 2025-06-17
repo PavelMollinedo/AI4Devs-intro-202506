@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reverse String by Pavel Mollinedo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #444;
+    }
+    .copy-section {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    #hiddenTextarea {
+      position: absolute;
+      left: -9999px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Reverse String by Pavel Mollinedo</h1>
+
+  <input type="text" id="inputText" placeholder="Ingresa una cadena de texto">
+  <br>
+  <button onclick="reverseText()">Invertir</button>
+  <button onclick="clearFields()">Limpiar</button>
+
+  <div id="outputContainer" style="display:none;">
+    <div id="output"></div>
+    <div class="copy-section">
+      <button onclick="copyToClipboard()">Copiar al portapapeles</button>
+    </div>
+  </div>
+
+  <!-- Fallback para Safari y navegadores antiguos -->
+  <textarea id="hiddenTextarea" readonly></textarea>
+
+  <script>
+    function reverseText() {
+      const input = document.getElementById("inputText").value;
+      const reversed = input.split("").reverse().join("");
+      const output = document.getElementById("output");
+      output.textContent = reversed;
+
+      document.getElementById("outputContainer").style.display = "block";
+    }
+
+    function clearFields() {
+      document.getElementById("inputText").value = "";
+      document.getElementById("output").textContent = "";
+      document.getElementById("outputContainer").style.display = "none";
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById("output").textContent;
+
+      if (navigator.clipboard && window.isSecureContext) {
+        // Método moderno (HTTPS obligatorio)
+        navigator.clipboard.writeText(text)
+          .then(() => alert("Texto copiado al portapapeles"))
+          .catch(err => alert("Error al copiar: " + err));
+      } else {
+        // Fallback compatible con Safari
+        const textarea = document.getElementById("hiddenTextarea");
+        textarea.value = text;
+        textarea.select();
+        try {
+          const success = document.execCommand('copy');
+          alert(success ? "Texto copiado al portapapeles" : "Error al copiar el texto");
+        } catch (err) {
+          alert("Error al copiar: " + err);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
